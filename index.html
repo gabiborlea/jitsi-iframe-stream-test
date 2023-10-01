@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- add here external api url-->
+    <script src="https://8x8.vc/vpasa/external_api.js" async></script>
+    <style>
+      html,
+      body,
+      #jaas-container {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script type="text/javascript">
+      var api;
+      // add the room name
+      // ex vpaas-magic-cookie-..../testurl
+      const roomName = "";
+      const jwt = "";
+      var youtubeStreamKey = "";
+      var youtubeBroadcastID;
+      window.onload = () => {
+        api = new JitsiMeetExternalAPI("8x8.vc", {
+          roomName,
+          parentNode: document.querySelector("#jaas-container"),
+          jwt,
+          configOverwrite: {
+            startWithAudioMuted: true,
+            maxStageParticipants: 3,
+            defaultLanguage: "en",
+            requireDisplayName: true,
+            prejoinPageEnabled: true,
+            disabledNotifications: [
+              "lobby.joinRejectedMessage",
+              "lobby.notificationTitle",
+              "notify.participantWantsToJoin",
+            ],
+          },
+          interfaceConfigOverwrite: {
+            TOOLBAR_BUTTONS: [
+              "microphone",
+              "camera",
+              "desktop",
+              "select-background",
+              "filmstrip",
+            ],
+          },
+        });
+      };
+    </script>
+  </head>
+  <body>
+    <button onclick="startRecording()">Start Stream</button>
+    <button onclick="stopRecording()">Stop Stream</button>
+    <div id="jaas-container" />
+  </body>
+  <script>
+    function startRecording() {
+      api.executeCommand("startRecording", {
+        mode: "stream",
+        youtubeStreamKey, //the youtube stream key.
+        youtubeBroadcastID, //the youtube broacast ID.
+      });
+      console.log("Start Stream");
+    }
+    function stopRecording() {
+      api.executeCommand("stopRecording", {
+        mode: "stream",
+      });
+      console.log("Stop Stream");
+    }
+  </script>
+</html>
